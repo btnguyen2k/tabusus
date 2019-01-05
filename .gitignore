@@ -1,0 +1,6 @@
+/.idea/
+/pkg/
+/bin/
+Gopkg.lock
+/src/tabusus/vendor/
+/src/github.com/
