@@ -44,17 +44,21 @@ func initEcho() *echo.Echo {
 	e.Renderer = newTemplateRenderer("./views", ".html")
 
 	// register controllers
+	s := NewStats()
+	e.Use(s.Process)
+	e.GET("/stats", s.Handle) // Endpoint to get stats
+
 	e.GET("/logout", actionLogout).Name = "logout"
 	e.GET("/login", actionLogin).Name = "login"
 	e.POST("/login", actionLoginSubmit).Name = "login"
-	e.GET("/apps", actionAppList).Name = "apps"
-	e.GET("/createApp", actionCreateApp).Name = "createApp"
-	e.POST("/createApp", actionCreateAppSubmit).Name = "createApp"
-	e.GET("/editApp/:id", actionEditApp).Name = "editApp"
-	e.POST("/editApp/:id", actionEditAppSubmit).Name = "editApp"
-	e.GET("/deleteApp/:id", actionDeleteApp).Name = "deleteApp"
-	e.POST("/deleteApp/:id", actionDeleteAppSubmit).Name = "deleteApp"
-	e.GET("/", actionHome).Name = "home"
+	e.GET("/apps", actionAppList, RequiredAuthMiddleWare).Name = "apps"
+	e.GET("/createApp", actionCreateApp, RequiredAuthMiddleWare).Name = "createApp"
+	e.POST("/createApp", actionCreateAppSubmit, RequiredAuthMiddleWare).Name = "createApp"
+	e.GET("/editApp/:id", actionEditApp, RequiredAuthMiddleWare).Name = "editApp"
+	e.POST("/editApp/:id", actionEditAppSubmit, RequiredAuthMiddleWare).Name = "editApp"
+	e.GET("/deleteApp/:id", actionDeleteApp, RequiredAuthMiddleWare).Name = "deleteApp"
+	e.POST("/deleteApp/:id", actionDeleteAppSubmit, RequiredAuthMiddleWare).Name = "deleteApp"
+	e.GET("/", actionHome, RequiredAuthMiddleWare).Name = "home"
 
 	// register session middleware
 	sessionKey := AppConfig.Conf.GetString("session.key", "secret")
