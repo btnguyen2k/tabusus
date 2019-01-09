@@ -1,0 +1,70 @@
+{{define "title"}}Delete Application{{end}}
+{{define "page_css"}}<!--this page has no custom CSS-->{{end}}
+{{define "page_js"}}<!--this page has no custom JS-->{{end}}
+{{define "page_content"}}
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{call .reverse "home"}}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Delete Application</li>
+    </ol>
+
+    <!-- Page Content -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>Delete Application {{if .app}}[{{.app.GetId}}]{{end}}</strong>
+        </div>
+        <div class="card-body">
+            {{if .error}}
+                <p class="alert alert-danger" role="alert">{{.error}}</p>
+            {{end}}
+            {{if .app}}
+                <p class="alert alert-warning" role="alert">
+                    Are you really sure you want to delete application [{{.app.GetId}}]?
+                    <br/>
+                    This action is not undoable!
+                </p>
+            {{end}}
+            <form method="post">
+                {{if .app}}
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="enabled" value="1" disabled="disabled"
+                                       {{if eq .app.GetStatus 1}}checked="checked"{{end}}/>
+                                Enabled
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="id" name="id" class="form-control"
+                                   placeholder="Application ID (a-z, 0-9, _ and -)"
+                                   value="{{.app.GetId}}"
+                                   disabled="disabled"/>
+                            <label for="id">Application ID (only a-z, 0-9, _ and -)</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="desc" name="desc" class="form-control" placeholder="Description"
+                                   value="{{.app.GetDescription}}" disabled="disabled"/>
+                            <label for="desc">Description</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label-group">
+                        <textarea id="pubkey" name="pubkey" class="form-control" placeholder="RSA Public Key (Base64, min 1024 bits)"
+                                  rows="4" disabled="disabled">{{.app.GetRsaPubKey}}</textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                {{end}}
+                <a class="btn btn-light" href="{{call .reverse "apps"}}"><i class="fa fa-cogs"></i> Cancel</a>
+            </form>
+        </div>
+        <div class="card-footer small text-muted">
+        </div>
+    </div>
+{{end}}

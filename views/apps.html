@@ -1,0 +1,77 @@
+{{define "title"}}Applications{{end}}
+{{define "page_css"}}
+    <link href="{{.static}}/sb-admin-5.0.2/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+{{end}}
+{{define "page_js"}}
+    <script src="{{.static}}/sb-admin-5.0.2/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="{{.static}}/sb-admin-5.0.2/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+{{end}}
+{{define "page_content"}}
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{call .reverse "home"}}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Applications</li>
+    </ol>
+
+    <!-- Page Content -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <a class="btn btn-sm btn-primary" href="{{call .reverse "createApp"}}"><i class="fas fa-plus"></i> Create New App</a>
+        </div>
+        <div class="card-body">
+            {{if .flash}}
+                <p class="alert alert-info" role="alert">{{.flash}}</p>
+            {{end}}
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th style="width: 180px">Actions</th>
+                    </tr>
+                    </thead>
+                    <!--
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                    </tfoot>
+                    -->
+                    <tbody>
+                    {{if gt (len .apps) 0}}
+                        {{range .apps}}
+                            <tr>
+                                <td>{{.GetId}}</td>
+                                <td>{{.GetStatusStr}}</td>
+                                <td>{{.GetDescription}}</td>
+                                <td>
+                                    <a href="{{.UrlEdit}}"><i class="fa fa-edit"></i> Edit</a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="{{.UrlDelete}}" style="color: red"><i class="fa fa-trash"></i> Delete</a>
+                                </td>
+                            </tr>
+                        {{end}}
+                    {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">
+            <a class="btn btn-sm btn-primary" href="{{call .reverse "createApp"}}"><i class="fas fa-plus"></i> Create New App</a>
+            <!--Updated yesterday at 11:59 PM-->
+        </div>
+    </div>
+{{end}}

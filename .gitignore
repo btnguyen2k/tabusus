@@ -3,4 +3,4 @@
 /bin/
 Gopkg.lock
 /src/tabusus/vendor/
-/src/github.com/
+/gin-bin
